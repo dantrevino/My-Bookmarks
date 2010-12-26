@@ -55,8 +55,8 @@ public class MyBookmarks extends Activity
                     
                     FileOutputStream f = new FileOutputStream(file);
                     
-                    Cursor mCur = managedQuery(android.provider.Browser.BOOKMARKS_URI,
-                   		null, null, null, null
+                    Cursor mCur = managedQuery(android.provider.Browser.BOOKMARKS_URI,null,
+                   		android.provider.Browser.BookmarkColumns.BOOKMARK, null, null
                    		);
                    	
                    	// setting progress bar max to # of bookmarks x2 (r,w)	
@@ -86,7 +86,7 @@ public class MyBookmarks extends Activity
 
                     while (mCur.isAfterLast() == false) {
                     	String title = new String(mCur.getString(titleIdx));
-//                    	String bkmk = new String("\n" + mCur.getString(bookmarkIdx));
+//                    	String bkmk = new String("\n" + mCur.getString(bookmarkIdx)); /* 1 if bm, 0 if history */
 //                    	view.append("\n" + mCur.getString(faviconIdx));
 //                    	String created = new String(mCur.getString(createdIdx));
                     	String url = new String(mCur.getString(urlIdx));

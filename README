@@ -1,0 +1,11 @@
+Export Android browser bookmarks in a format that is compatible with Chrome and Firefox desktop import
+
+A simple utility to export your Android Browser bookmarks to SD in a format that can be imported to desktop Firefox and Chrome browsers.
+
+Bookmarks will be exported to "my_bookmarks/my_bookmarks.html". Any existing version of this file will be overwritten.
+
+Currently the process starts as soon as the app is launched.
+
+An actual user interface may follow.
+
+Thanks to SmashingMagazine for the free "Coded" icon set!!
