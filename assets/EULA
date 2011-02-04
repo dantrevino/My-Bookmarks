@@ -1,4 +1,7 @@
-This application is in very early testing stages.  Do not use it if you do not
-want to lose the contents of your SD card or internal storage.
+This is a very simple utility that will export your Android bookmarks into a format
+that is import-ready for desktop Firefox and Chrome browsers.
 
-Use at your own risk.
+The export file resides on your external storage device (usually a removable microsd
+ card) in the "my_bookmarks" folder.
+ 
+

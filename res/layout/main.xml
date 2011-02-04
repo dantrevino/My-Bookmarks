@@ -1,20 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<ProgressBar
+
+<TextView 
+ android:id="@+id/txtUserMessage"
+ android:layout_width="fill_parent"
+ android:layout_height="wrap_content"
+ android:padding="8px"
+/>
+
+<Button
+    android:id="@+id/start"
+    android:drawableLeft="@drawable/button_icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:text="Begin Export"
+/>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="fill_parent"
+  android:orientation="horizontal"
+  android:padding="4px"
+  >
+  <ImageView
+  android:id="@+id/final_status"
+  android:layout_width="wrap_content"
+  android:layout_height="fill_parent"
+  android:layout_alignParentTop="true"
+  android:layout_alignParentBottom="true"
+  android:layout_marginRight="4px"
+  />
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="fill_parent"
+  android:orientation="vertical"
+  >
+    <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    style="?android:attr/progressBarStyleHorizontal"
-    android:id="@+id/progress_bar"
-    android:max="100"
- />
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:id="@+id/hello"
+    android:id="@+id/status"
+    android:layout_weight="1"
+    android:gravity="center_vertical"
+    android:textStyle="bold"
+    android:singleLine="true"
     />
-</LinearLayout>
+  </LinearLayout>
+</LinearLayout>    
+</RelativeLayout>
 
