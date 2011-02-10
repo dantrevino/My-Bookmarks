@@ -3,6 +3,7 @@ package org.dant.MyBookmarks;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.database.Cursor;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -124,81 +126,6 @@ public class MyBookmarks extends Activity implements OnClickListener
 //        }            
     } //onCreate
     
-//     protected void exportTask ()
-//     {
-//         String appPath = new String("my_bookmarks");
-        
-//         try {            
-//             File root = Environment.getExternalStorageDirectory();
-//             File dir = new File (root.getAbsolutePath() + "/" + appPath);
-//             dir.mkdirs();
-            
-//             File exfile = new File(dir, appPath +".html");
-            
-//             FileOutputStream exportFile = new FileOutputStream(exfile);
-            
-//             //query the bookmarks uri, filter by "bookmark" column
-//             Cursor mCur = managedQuery(android.provider.Browser.BOOKMARKS_URI,null,
-//            		android.provider.Browser.BookmarkColumns.BOOKMARK, null, null
-//            		);
-           	
-           	
-//            	int bCount = mCur.getCount();
-//            	System.out.println("found " + bCount + " bookmarks");
-//            	dialog.setMax(bCount);
-           	
-// //         	if (DEBUG) Log.v(TAG, "Found " + bCount + " bookmarks");
-           	               		
-//             mCur.moveToFirst();
-            
-//             int titleIdx = mCur.getColumnIndex(Browser.BookmarkColumns.TITLE);
-//             int bookmarkIdx = mCur.getColumnIndex(Browser.BookmarkColumns.BOOKMARK);
-//             int faviconIdx = mCur.getColumnIndex(Browser.BookmarkColumns.FAVICON);
-//             int createdIdx = mCur.getColumnIndex(Browser.BookmarkColumns.CREATED);
-//             int urlIdx = mCur.getColumnIndex(Browser.BookmarkColumns.URL);
-//             int dateIdx = mCur.getColumnIndex(Browser.BookmarkColumns.DATE);
-//             int visitsIdx = mCur.getColumnIndex(Browser.BookmarkColumns.VISITS);
-
-//             // set up bookmark export file header
-//             String bmHeader = new String ("<!DOCTYPE NETSCAPE-Bookmark-file-1>\n");
-//             bmHeader += "<!-- This is an automatically generated file.\n";
-//             bmHeader += "     It will be read and overwritten.\n";
-//             bmHeader += "     DO NOT EDIT! -->\n";
-//             bmHeader += "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\">\n";
-//             bmHeader += "<TITLE>Bookmarks</TITLE>\n";
-//             bmHeader += "<H1>Bookmarks</H1>";
-//             bmHeader += "<DL><p>\n<DT><H3 ADD_DATE=\"0\" LAST_MODIFIED=\"1293023299\" PERSONAL_TOOLBAR_FOLDER=\"true\">Bookmarks Bar</H3>\n<DL><p>\n";
-                        
-//             exportFile.write(bmHeader.getBytes());
-
-//             while (mCur.isAfterLast() == false) {
-//             	String title = new String(mCur.getString(titleIdx));
-// //                    	String bkmk = new String("\n" + mCur.getString(bookmarkIdx)); /* 1 if bm, 0 if history */
-// //                    	view.append("\n" + mCur.getString(faviconIdx));
-// //                    	String created = new String(mCur.getString(createdIdx));
-//             	String url = new String(mCur.getString(urlIdx));
-//             	String date = new String(mCur.getString(dateIdx));
-// //                    	String visits = new String("\n" + mCur.getString(visitsIdx));
-            	
-//             	//build export line
-//             	String bookmarkExport = new String("<DT><A HREF=\"" + url + "\" ADD_DATE=\"" + date + "\">" + title + "</A>\n");
-            	
-//             	exportFile.write(bookmarkExport.getBytes());
-//             	dialog.incrementProgressBy(1);
-//             	mCur.moveToNext();
-//             }
-                                    
-//             dialog.setProgress(bCount);
-//             // clean up the file
-//             String tail = new String("</DL><p>");
-//             exportFile.write(tail.getBytes());
-//             exportFile.flush();
-//             exportFile.close();
-//         } catch (Exception e) {
-//             System.out.println("Error exporting file " + e.getMessage());
-//         }
-//     } // exportTask
-
     private void setIconState()
     {
 //        // TODO: set icon states
@@ -216,12 +143,8 @@ public class MyBookmarks extends Activity implements OnClickListener
 
     @Override
     public void onClick(View v) {
-        // Activity.requestWindowFeature(Window.FEATURE_PROGRESS);
-
-//        dialog = ProgressDialog.show(MyBookmarks.this, "", "Exporting...", true);
-        // exportTask();
         new StartExportTask().execute(); 
-        // dialog.dismiss();
+
     }
 
     private class StartExportTask extends AsyncTask<String, Void, Void> {
@@ -309,6 +232,12 @@ public class MyBookmarks extends Activity implements OnClickListener
         protected void onPostExecute(Void Result)
         {
             dialog.dismiss();
+            Context context = getApplicationContext();
+            CharSequence text = "Export Complete!";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
     }// end StartExportTask
 
