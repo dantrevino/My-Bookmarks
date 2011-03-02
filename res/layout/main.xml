@@ -22,34 +22,10 @@
 />
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="wrap_content"
-  android:layout_height="fill_parent"
-  android:orientation="horizontal"
-  android:padding="4px"
-  >
-  <ImageView
-  android:id="@+id/final_status"
-  android:layout_width="wrap_content"
-  android:layout_height="fill_parent"
-  android:layout_alignParentTop="true"
-  android:layout_alignParentBottom="true"
-  android:layout_marginRight="4px"
-  />
-  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="wrap_content"
-  android:layout_height="fill_parent"
-  android:orientation="vertical"
-  >
-    <TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:id="@+id/status"
-    android:layout_weight="1"
-    android:gravity="center_vertical"
-    android:textStyle="bold"
-    android:singleLine="true"
-    />
-  </LinearLayout>
-</LinearLayout>    
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/my_id">
+</LinearLayout>
 </RelativeLayout>
 

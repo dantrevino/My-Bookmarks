@@ -1,5 +1,9 @@
 package org.dant.MyBookmarks;
 
+// amobee ads
+import com.amobee.onlineHapi.AmobeeAdView;
+import com.amobee.onlineHapi.OnlineHAPI;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -19,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.graphics.Typeface;
 import android.view.Window;
+import android.widget.LinearLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,7 +51,8 @@ public class MyBookmarks extends Activity implements OnClickListener
     private static final String USER_MESSAGE = "user.message";
     private boolean showButton = false;
     ProgressDialog dialog;
-
+	private static AmobeeAdView amobeeAdView;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -58,8 +64,45 @@ public class MyBookmarks extends Activity implements OnClickListener
         
         Button button;
 
+        // find the layout which to put AmobeeAdView on
+        LinearLayout layout = (LinearLayout) findViewById(R.id.my_id);
+
+        // initialize HAPI
+        OnlineHAPI onlineHAPI = OnlineHAPI.getInstance(this);
         
-        //TODO: A user interface would be nice
+        // create amobeeAdView once and use it every time on each configuration change
+        if (amobeeAdView == null) {
+	        // get AmobeeAdView - Amobee modified WebView control
+	        // ad space, placement and format are set in the following function
+	        amobeeAdView = onlineHAPI.getAdView("20436", 1, "MMA_Hbanner_6_1");    
+	        
+	        // set background color
+	        // amobeeAdView.setBackgroundColor(Color.TRANSPARENT);
+	        
+	        // set refresh interval in seconds
+	        amobeeAdView.setRefreshInterval(10);
+	        
+	        // disable focus on the control
+	        amobeeAdView.setFocusable(false);
+        }
+
+        // set new control width on configuration change
+        // this must be done to align the control properly when going from portrait to landscape
+        amobeeAdView.setLocation(50, 50, getWindowManager().getDefaultDisplay().getWidth(), 75); 
+        
+        // remove parent on configuration change
+        // without doing this we will not be able 
+        // to add the amobeeAdView to another layout at the next line
+		LinearLayout parent = (LinearLayout)amobeeAdView.getParent();
+		if (parent != null) {
+			parent.removeView(amobeeAdView);
+		}
+        
+        // add the control to the layout 
+        layout.addView(amobeeAdView);
+
+        
+
         //TODO: Add backup and restore capabilities
 
         // Programmatically load text from an asset and place it into the
@@ -119,27 +162,9 @@ public class MyBookmarks extends Activity implements OnClickListener
         button.setTypeface(tf);
         button.setOnClickListener(this);
          
-//        setIconState();
-   
-//        if (mExternalStorageAvailable && mExternalStorageWriteable) {
-//            new BookmarkExportTask().execute();
-//        }            
     } //onCreate
     
-    private void setIconState()
-    {
-//        // TODO: set icon states
-//        if (mExternalStorageAvailable && mExternalStorageWriteable){
-//            //TODO: show sdcard-writable
-//            //TODO: show sdcard-available
-//        } else if (mExternalStorageAvailable && (!mExternalStorageWriteable)) {
-//            //TODO: show sdcard-available
-//            //TODO: show sdcard-unwritable
-//        } else if (!mExternalStorageAvailable || mExternalStorageWriteable) {
-//            //TODO: show sdcard-unavailable
-//            //TODO: show sdcard-unwritable
-//        }
-    }
+//    }
 
     @Override
     public void onClick(View v) {
