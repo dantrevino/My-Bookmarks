@@ -60,7 +60,7 @@ public class MyBookmarks extends Activity implements OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        Typeface tf = Typeface.createFromAsset(getBaseContext().getAssets(), "fonts/Ubuntu-R.ttf");
+//        Typeface tf = Typeface.createFromAsset(getBaseContext().getAssets(), "fonts/Ubuntu-R.ttf");
         
         Button button;
 
@@ -126,7 +126,7 @@ public class MyBookmarks extends Activity implements OnClickListener
 
             // Finally stick the string into the text view.
             TextView tv = (TextView)findViewById(R.id.txtUserMessage);
-            tv.setTypeface(tf);
+            //tv.setTypeface(tf);
             tv.setText(text);
         } catch (IOException e) {
             // Should never happen!
@@ -159,7 +159,7 @@ public class MyBookmarks extends Activity implements OnClickListener
         
         // Setup the button that starts the progress dialog
         button = (Button) findViewById(R.id.start);
-        button.setTypeface(tf);
+        //button.setTypeface(tf);
         button.setOnClickListener(this);
          
     } //onCreate
