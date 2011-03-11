@@ -1,8 +1,8 @@
 package org.dant.MyBookmarks;
 
 // amobee ads
-import com.amobee.onlineHapi.AmobeeAdView;
-import com.amobee.onlineHapi.OnlineHAPI;
+//import com.amobee.onlineHapi.AmobeeAdView;
+//import com.amobee.onlineHapi.OnlineHAPI;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,12 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
-import android.os.Handler;
+//import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.graphics.Typeface;
-import android.view.Window;
+//import android.graphics.Typeface;
+//import android.view.Window;
 import android.widget.LinearLayout;
 
 import java.io.File;
@@ -51,7 +51,7 @@ public class MyBookmarks extends Activity implements OnClickListener
     private static final String USER_MESSAGE = "user.message";
     private boolean showButton = false;
     ProgressDialog dialog;
-	private static AmobeeAdView amobeeAdView;
+//	private static AmobeeAdView amobeeAdView;
 	
     /** Called when the activity is first created. */
     @Override
@@ -64,6 +64,9 @@ public class MyBookmarks extends Activity implements OnClickListener
         
         Button button;
 
+        /* 
+         * Amobee Ad
+         *
         // find the layout which to put AmobeeAdView on
         LinearLayout layout = (LinearLayout) findViewById(R.id.my_id);
 
@@ -101,7 +104,7 @@ public class MyBookmarks extends Activity implements OnClickListener
         // add the control to the layout 
         layout.addView(amobeeAdView);
 
-        
+        */ 
 
         //TODO: Add backup and restore capabilities
 
