@@ -1,11 +1,6 @@
 package org.dant.MyBookmarks;
 
-// amobee ads
-//import com.amobee.onlineHapi.AmobeeAdView;
-//import com.amobee.onlineHapi.OnlineHAPI;
-
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,17 +8,11 @@ import android.os.Environment;
 import android.os.AsyncTask;
 import android.provider.Browser;
 import android.database.Cursor;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
-//import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
-//import android.graphics.Typeface;
-//import android.view.Window;
-import android.widget.LinearLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,7 +29,6 @@ import java.io.InputStream;
     Browser.BookmarkColumns.VISITS 
 */
 
-
 public class MyBookmarks extends Activity implements OnClickListener
 {
     static final boolean DEBUG = false;
@@ -49,9 +37,7 @@ public class MyBookmarks extends Activity implements OnClickListener
     static final int DIALOG_EXPORT = 0;
     
     private static final String USER_MESSAGE = "user.message";
-    private boolean showButton = false;
     ProgressDialog dialog;
-//	private static AmobeeAdView amobeeAdView;
 	
     /** Called when the activity is first created. */
     @Override
@@ -59,56 +45,12 @@ public class MyBookmarks extends Activity implements OnClickListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
-//        Typeface tf = Typeface.createFromAsset(getBaseContext().getAssets(), "fonts/Ubuntu-R.ttf");
         
         Button button;
 
-        /* 
-         * Amobee Ad
-         *
-        // find the layout which to put AmobeeAdView on
-        LinearLayout layout = (LinearLayout) findViewById(R.id.my_id);
-
-        // initialize HAPI
-        OnlineHAPI onlineHAPI = OnlineHAPI.getInstance(this);
-        
-        // create amobeeAdView once and use it every time on each configuration change
-        if (amobeeAdView == null) {
-	        // get AmobeeAdView - Amobee modified WebView control
-	        // ad space, placement and format are set in the following function
-	        amobeeAdView = onlineHAPI.getAdView("20436", 1, "MMA_Hbanner_6_1");    
-	        
-	        // set background color
-	        // amobeeAdView.setBackgroundColor(Color.TRANSPARENT);
-	        
-	        // set refresh interval in seconds
-	        amobeeAdView.setRefreshInterval(10);
-	        
-	        // disable focus on the control
-	        amobeeAdView.setFocusable(false);
-        }
-
-        // set new control width on configuration change
-        // this must be done to align the control properly when going from portrait to landscape
-        amobeeAdView.setLocation(50, 50, getWindowManager().getDefaultDisplay().getWidth(), 75); 
-        
-        // remove parent on configuration change
-        // without doing this we will not be able 
-        // to add the amobeeAdView to another layout at the next line
-		LinearLayout parent = (LinearLayout)amobeeAdView.getParent();
-		if (parent != null) {
-			parent.removeView(amobeeAdView);
-		}
-        
-        // add the control to the layout 
-        layout.addView(amobeeAdView);
-
-        */ 
-
         //TODO: Add backup and restore capabilities
 
-        // Programmatically load text from an asset and place it into the
+        // Programatically load text from an asset and place it into the
         // text view.  Note that the text we are loading is ASCII, so we
         // need to convert it to UTF-16.
         try {
@@ -136,6 +78,7 @@ public class MyBookmarks extends Activity implements OnClickListener
             throw new RuntimeException(e);
         }
 
+        // TODO: finish better sd card availability checking
         // http://developer.android.com/guide/topics/data/data-storage.html#filesExternal
         boolean mExternalStorageAvailable = false;
         boolean mExternalStorageWriteable = false;
@@ -144,7 +87,7 @@ public class MyBookmarks extends Activity implements OnClickListener
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             // We can read and write the media
             // TODO: custom view to display success.  Needs "check" icon.
-            mExternalStorageAvailable = mExternalStorageWriteable = showButton = true;
+            mExternalStorageAvailable = mExternalStorageWriteable = true;
         } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             // We can only read the media
             // TODO: custom view to display error. Use coded "lock" icon.
@@ -169,7 +112,6 @@ public class MyBookmarks extends Activity implements OnClickListener
     
 //    }
 
-    @Override
     public void onClick(View v) {
         new StartExportTask().execute(); 
 
@@ -189,7 +131,8 @@ public class MyBookmarks extends Activity implements OnClickListener
                 
                 FileOutputStream exportFile = new FileOutputStream(exfile);
                 
-                //query the bookmarks uri, filter by "bookmark" column
+                // query the bookmarks uri, filter by "bookmark" column
+                // so that we dont get "history" entries
                 Cursor mCur = managedQuery(android.provider.Browser.BOOKMARKS_URI,null,
                     android.provider.Browser.BookmarkColumns.BOOKMARK, null, null
                     );
@@ -197,7 +140,6 @@ public class MyBookmarks extends Activity implements OnClickListener
                 
                 int bCount = mCur.getCount();
                 System.out.println("found " + bCount + " bookmarks");
-                // dialog.setMax(bCount);
                 
     //          if (DEBUG) Log.v(TAG, "Found " + bCount + " bookmarks");
                                     
@@ -210,6 +152,7 @@ public class MyBookmarks extends Activity implements OnClickListener
                 int urlIdx = mCur.getColumnIndex(Browser.BookmarkColumns.URL);
                 int dateIdx = mCur.getColumnIndex(Browser.BookmarkColumns.DATE);
                 int visitsIdx = mCur.getColumnIndex(Browser.BookmarkColumns.VISITS);
+                int unixtime = (int) (System.currentTimeMillis() / 1000L);
 
                 // set up bookmark export file header
                 String bmHeader = new String ("<!DOCTYPE NETSCAPE-Bookmark-file-1>\n");
@@ -219,18 +162,15 @@ public class MyBookmarks extends Activity implements OnClickListener
                 bmHeader += "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\">\n";
                 bmHeader += "<TITLE>Bookmarks</TITLE>\n";
                 bmHeader += "<H1>Bookmarks</H1>";
-                bmHeader += "<DL><p>\n<DT><H3 ADD_DATE=\"0\" LAST_MODIFIED=\"1293023299\" PERSONAL_TOOLBAR_FOLDER=\"true\">Bookmarks Bar</H3>\n<DL><p>\n";
+                bmHeader += "<DL><p>\n<DT><H3 ADD_DATE=\"0\" LAST_MODIFIED=\"" + unixtime + "\" PERSONAL_TOOLBAR_FOLDER=\"true\">Bookmarks Bar</H3>\n<DL><p>\n";
                             
                 exportFile.write(bmHeader.getBytes());
 
+                // TODO: quit creating so many Strings!
                 while (mCur.isAfterLast() == false) {
                     String title = new String(mCur.getString(titleIdx));
-    //                      String bkmk = new String("\n" + mCur.getString(bookmarkIdx)); /* 1 if bm, 0 if history */
-    //                      view.append("\n" + mCur.getString(faviconIdx));
-    //                      String created = new String(mCur.getString(createdIdx));
                     String url = new String(mCur.getString(urlIdx));
                     String date = new String(mCur.getString(dateIdx));
-    //                      String visits = new String("\n" + mCur.getString(visitsIdx));
                     
                     //build export line
                     String bookmarkExport = new String("<DT><A HREF=\"" + url + "\" ADD_DATE=\"" + date + "\">" + title + "</A>\n");
@@ -240,7 +180,6 @@ public class MyBookmarks extends Activity implements OnClickListener
                     mCur.moveToNext();
                 }
                                         
-                // dialog.setProgress(bCount);
                 // clean up the file
                 String tail = new String("</DL><p>");
                 exportFile.write(tail.getBytes());
@@ -268,7 +207,4 @@ public class MyBookmarks extends Activity implements OnClickListener
             toast.show();
         }
     }// end StartExportTask
-
-
-
 } // MyBookmarks
